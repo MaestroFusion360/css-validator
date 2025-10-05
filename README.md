@@ -93,6 +93,7 @@ MIT License — See [LICENSE](LICENSE.md) for details.
 
 ---
 
+<!-- markdownlint-disable -->
 <p align="center">
   <a href="https://github.com/MaestroFusion360/css-validator/issues">
     <img src="https://img.shields.io/github/issues/MaestroFusion360/css-validator" alt="Issues">
@@ -101,3 +102,8 @@ MIT License — See [LICENSE](LICENSE.md) for details.
     <img src="https://img.shields.io/github/stars/MaestroFusion360/css-validator" alt="Stars">
   </a>
 </p>
+
+<p align="center">
+  <img src="https://komarev.com/ghpvc/?username=css-validator-pages&repo=css-validator-pages&color=blue&style=flat-square&label=REPOSITORY+VIEWS" alt="Repository views">
+</p>
+<!-- markdownlint-enable -->
