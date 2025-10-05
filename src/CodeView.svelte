@@ -33,15 +33,14 @@
   function normalize(raw: string): string {
     if (!raw) return "";
     let s = raw.replace(/\r\n/g, "\n");
-    s = s.replace(/^\n/, "");
     const lines = s.split("\n");
-    const indents = lines
-      .filter((l) => l.trim().length > 0)
-      .map((l) => l.match(/^[ \t]*/)?.[0].length ?? 0);
-    const minIndent = indents.length ? Math.min(...indents) : 0;
-    return minIndent > 0
-      ? lines.map((l) => l.slice(Math.min(minIndent, l.length))).join("\n")
-      : s;
+    let firstNonEmpty = 0;
+    while (firstNonEmpty < lines.length && lines[firstNonEmpty].trim() === "") {
+      firstNonEmpty++;
+    }
+    if (firstNonEmpty === lines.length) return "";
+    const trimmedLines = lines.slice(firstNonEmpty);
+    return trimmedLines.join("\n");
   }
 
   function hlCSS(safe: string): string {
@@ -54,7 +53,15 @@
   }
 
   function hlHTML(safe: string): string {
-    return safe
+    let result = safe.replace(
+      /(&lt;style[^&]*?&gt;)([\s\S]*?)(&lt;\/style&gt;)/gi,
+      (match, startTag, cssContent, endTag) => {
+        const highlightedCSS = hlCSS(cssContent);
+        return `${startTag}${highlightedCSS}${endTag}`;
+      }
+    );
+
+    result = result
       .replace(
         /&lt;(\/?)([A-Za-z][\w:-]*)(?=[\s&gt;])/g,
         (_m, slash, name) => `&lt;${slash}<span class="cv-tag">${name}</span>`
@@ -68,6 +75,8 @@
         /&lt;!--([\s\S]*?)--&gt;/g,
         `<span class="cv-comment">&lt;!--$1--&gt;</span>`
       );
+
+    return result;
   }
 
   function highlight(raw: string): string {
@@ -79,7 +88,7 @@
     return safe;
   }
 
-  const displayed = $derived(normalize(code));
+  const displayed = $derived(normalize(code).trim()); 
   const formatted = $derived(
     ["css", "html"].includes(language)
       ? highlight(displayed)
@@ -148,14 +157,14 @@
 <style>
   .cv {
     --cv-bg: #fff;
-    --cv-fg: #222;
-    --cv-border: #ccc;
-    --cv-head-bg: #f5f5f5;
-    --cv-head-fg: #555;
-    --cv-muted: #888;
-    --cv-btn-bg: #4299e1;
-    --cv-btn-bg-hover: #3182ce;
-    --cv-btn-copied: #38a169;
+    --cv-fg: #1e1e1e;
+    --cv-border: #e1e4e8;
+    --cv-head-bg: #f6f8fa;
+    --cv-head-fg: #24292e;
+    --cv-muted: #6a737d;
+    --cv-btn-bg: #569cd6;
+    --cv-btn-bg-hover: #4a8bc2;
+    --cv-btn-copied: #6a9955;
 
     border: 1px solid var(--cv-border);
     border-radius: 8px;
@@ -254,13 +263,13 @@
 
   :global([data-theme="dark"]) .cv {
     --cv-bg: #1e1e1e;
-    --cv-fg: #f7fafc;
-    --cv-border: #4a5568;
-    --cv-head-bg: #2d2d2d;
-    --cv-head-fg: #ccc;
-    --cv-muted: #999;
-    --cv-btn-bg: #4299e1;
-    --cv-btn-bg-hover: #3182ce;
-    --cv-btn-copied: #2f855a;
+    --cv-fg: #d4d4d4;
+    --cv-border: #3e3e42;
+    --cv-head-bg: #2d2d30;
+    --cv-head-fg: #cccccc;
+    --cv-muted: #858585;
+    --cv-btn-bg: #569cd6;
+    --cv-btn-bg-hover: #4a8bc2;
+    --cv-btn-copied: #6a9955;
   }
 </style>

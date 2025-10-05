@@ -231,7 +231,7 @@ padding: 8px;`,
       }
     }
     if (mode === "block") {
-      const body = result.map((r) => "  " + r).join("\n");
+      const body = result.join("\n");
       return selector ? `${selector} {\n${body}\n}` : body;
     }
     return result.join(" ");
@@ -484,47 +484,44 @@ padding: 8px;`,
     </section>
   </main>
 </div>
-
+<!-- svelte-ignore css_unused_selector -->
 <style>
-  :global(.cv-tag) {
-    color: #e06c75;
-    font-weight: bold;
-  }
-  :global(.cv-attr) {
-    color: #98c379;
-    font-weight: 600;
-  }
-  :global(.cv-val) {
-    color: #e5c07b;
-    font-weight: 500;
-  }
-  :global(.cv-comment) {
-    color: #7f848e;
-    font-style: italic;
-  }
-  :global(.cv-keyword) {
-    color: #c678dd;
-    font-weight: bold;
-  }
-  :global(.cv-string) {
-    color: #98c379;
-  }
-  :global(.cv-number) {
-    color: #d19a66;
-  }
+
+  :global(.cv-tag) { color: #1a6bb7; font-weight: 600; }
+  :global(.cv-attr) { color: #0d7ea8; font-weight: 600; }
+  :global(.cv-val) { color: #a65a2b; }
+  :global(.cv-comment) { color: #3d6b33; font-style: italic; }
+  :global(.cv-keyword) { color: #8a3db6; font-weight: bold; }
+  :global(.cv-string) { color: #a65a2b; }
+  :global(.cv-number) { color: #2d7a3d; }
+  
+  :global([data-theme="dark"]) .cv-tag { color: #569cd6; }
+  :global([data-theme="dark"]) .cv-attr { color: #9cdcfe; }
+  :global([data-theme="dark"]) .cv-val { color: #ce9178; }
+  :global([data-theme="dark"]) .cv-comment { color: #6a9955; }
+  :global([data-theme="dark"]) .cv-keyword { color: #c678dd; }
+  :global([data-theme="dark"]) .cv-string { color: #ce9178; }
+  :global([data-theme="dark"]) .cv-number { color: #b5cea8; }
 
   :global([data-theme="light"]) {
     margin: 0;
     background: #f5f5f5;
     color: #222;
-    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
   }
 
   :global([data-theme="dark"]) {
     background: #1e1e1e;
     color: #f5f5f5;
-    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  :global([data-theme="light"]),
+  :global([data-theme="dark"]) {
+    font-family:
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
     line-height: 1.5;
   }
 
